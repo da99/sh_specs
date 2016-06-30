@@ -40,7 +40,7 @@ run-file () {
     specs
   fi
 
-  rm "$TEMP_PREFIX".*
+  rm -f "$TEMP_PREFIX".*
   trap - EXIT
 } # === end function
 
