@@ -1,7 +1,5 @@
 
 # === {{CMD}}  path/to/file.sh
-# === {{CMD}}  path/to/file.sh  optional args
-run-file () {
 
   local +x TEMP_PREFIX="/tmp/sh_specs.temp.$$"
   local +x FILE="$1"; shift
@@ -42,5 +40,5 @@ run-file () {
 
   rm -f "$TEMP_PREFIX".*
   trap - EXIT
-} # === end function
+
 
