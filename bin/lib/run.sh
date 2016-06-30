@@ -13,15 +13,15 @@ run() {
 
   local +x ORIGINAL="$@"
   local +x FOUND=""
+  local +x SKIPS=""
   local +x IFS=$'\n'
 
-  set -x
   while [[ ! -z "$@" ]]; do
 
     local +x TARGET="$1"; shift
 
     # === IF is file: ==============================================================
-    if [[ -f "$TARGET"  ]]; then
+    if [[ -f "$TARGET" && ! -z "$(files-with-specs "$TARGET")" ]]; then
       local +x FILE="$TARGET"
       $0 run-file "$FILE"
       continue
@@ -45,11 +45,13 @@ run() {
       continue
     fi # === if directory
 
-    mksh_setup RED "=== {{Invalid path}}: BOLD{{$TARGET}}"
-    exit 1
+    SKIPS="$SKIPS\nBOLD{{$TARGET}}"
   done # === while $@
 
   mksh_setup GREEN "==== All specs {{passed}} in: BOLD{{$ORIGINAL}}"
+  if [[ ! -z "$SKIPS" ]]; then
+    mksh_setup ORANGE "=== {{Skipped}}: $SKIPS"
+  fi
 } # === end func run
 
 

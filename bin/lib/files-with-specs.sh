@@ -1,14 +1,22 @@
 
-# === {{CMD}}  dir
-# === {{CMD}}  dir  search_string
+# === {{CMD}}  dir  file  file  dir ...
 files-with-specs () {
-  local +x DIR="$1"; shift
   local +x SEARCH="*.sh";
+  local +x PATTERN='^\ *should-'
 
-  if [[ ! -z "$@" ]]; then
-    SEARCH="$@"
-  fi
+  while [[ ! -z "$@" ]]; do
+    local +x TARGET="$1"; shift
+    if [[ -d "$TARGET" ]]; then
+      local +x DIR="$TARGET"
+      local +x FILES="$(find "$DIR" -maxdepth 1 -mindepth 1 -type f -name "$SEARCH" -print)"
+      test -n "$FILES" && grep --files-with-matches --perl-regexp "$PATTERN" $FILES | sort || :
+      continue
+    fi
 
-  local +x FILES="$(find "$DIR" -maxdepth 1 -mindepth 1 -type f -name "$SEARCH" -print)"
-  test -n "$FILES" && grep --files-with-matches --perl-regexp '^\ *should-' $FILES | sort || :
+    if [[ -f "$TARGET" ]]; then
+      local +x FILE="$TARGET"
+      grep --files-with-matches --perl-regexp "$PATTERN" "$FILE" || :
+      continue
+    fi
+  done # === while $@
 } # === end function
