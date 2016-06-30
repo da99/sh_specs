@@ -14,9 +14,9 @@ should-exit () {
   set -e
 
   if [[ "$expect" -eq "$actual" ]]; then
-    bash_setup GREEN  "=== {{Passed}}: exit $expect: $cmd"
+    mksh_setup GREEN  "=== {{Passed}}: exit $expect: $cmd"
   else
-    bash_setup RED "=== Spec wanted status $expect but got {{$actual}}"
+    mksh_setup RED "=== Spec wanted status $expect but got {{$actual}}"
   fi
 }
 

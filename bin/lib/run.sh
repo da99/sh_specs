@@ -23,7 +23,7 @@ run() {
     # === IF is file: ==============================================================
     if [[ -f "$TARGET" && ! -z "$(files-with-specs "$TARGET")" ]]; then
       local +x FILE="$TARGET"
-      $THIS_DIR/bin/lib/private/run-file "$FILE"
+      $THIS_DIR/bin/lib/private/run-file "$THIS_DIR" "$FILE"
       continue
     fi
 
@@ -33,7 +33,7 @@ run() {
       local +x FILES="$(files-with-specs "$DIR")"
       for FILE in $FILES; do
         mksh_setup BOLD "=== Specs: {{$FILE}}"
-        $THIS_DIR/bin/lib/private/run-file "$FILE"
+        $THIS_DIR/bin/lib/private/run-file "$THIS_DIR" "$FILE"
         echo ""
       done
 

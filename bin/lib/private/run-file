@@ -1,16 +1,21 @@
+#!/usr/bin/env mksh
+#
 
 # === {{CMD}}  path/to/file.sh
 
-  local +x TEMP_PREFIX="/tmp/sh_specs.temp.$$"
-  local +x FILE="$1"; shift
+  SH_SPECS_DIR="$1"; shift
+  ORIGIN_DIR="$PWD"
+
+  TEMP_PREFIX="/tmp/sh_specs.temp.$$"
+  FILE="$1"; shift
   export IS_SPEC_RUN="YES"
 
   # === Figure out if specs is defined.
   # === We can't simply "source" the file because the file would most likely
   # ===   have dependecnies relative to it's original location. In other words,
   # ===   it would have unknown behaviour.
-  local +x SPEC_LINE="$(grep -n -m 1 --perl-regexp "^\ *specs\ +\(" "$FILE" | cut -d: -f1 || :)"
-  local +x CODE=""
+  SPEC_LINE="$(grep -n -m 1 --perl-regexp "^\ *specs\ +\(" "$FILE" | cut -d: -f1 || :)"
+  CODE=""
   if [[ ! -z "$SPEC_LINE" ]]; then
     CODE="$(tail -n +${SPEC_LINE} "$FILE")"
   fi
@@ -20,19 +25,22 @@
     exit 1
   fi
 
-  for FUNC_FILE in $(find "$THIS_DIR/bin/lib/funcs/" -maxdepth 1 -mindepth 1 -name "*.sh" -print); do
-    source "$FUNC_FILE"
+  cd "$SH_SPECS_DIR"
+  for FUNC_FILE in $(find "bin/lib/funcs/" -maxdepth 1 -mindepth 1 -name "*.sh" -print); do
+    source "$SH_SPECS_DIR/$FUNC_FILE"
   done
+  cd "$ORIGIN_DIR"
 
   # NOTE: We can't use 'specs || report-fail'
   #  because of this:
   #  http://stackoverflow.com/questions/4072984/set-e-in-a-function
   trap 'report-fail $?' EXIT
 
+  THIS_DIR="$ORIGIN_DIR"
   if [[ -z "$CODE" ]]; then
     source "$FILE"
   else
-    local +x TMP="$(mktemp "$TEMP_PREFIX".XXXXXXXXXXXXXXXXXX)"
+    TMP="$(mktemp "$TEMP_PREFIX".XXXXXXXXXXXXXXXXXX)"
     echo "$CODE" > $TMP
     source "$TMP"
     specs
