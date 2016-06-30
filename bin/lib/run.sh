@@ -1,61 +1,84 @@
 
+source "$THIS_DIR"/bin/lib/files-with-specs.sh
 
 # === {{CMD}}                       # Run all specs in bin/lib
+# === {{CMD}}  dir/sub1/sub2        # Run all specs in specified dir.
 # === {{CMD}}  path/to/filename.sh  other args
 # === {{CMD}}  filename.sh          other args
 # === {{CMD}}  file*                other args
-run-specs () {
+run() {
 
+  local +x DIR=""
+  local +x FILE=""
+  local +x SEARCH_STRING=""
+  local +x IFS=$'\n'
+
+  # === SET THE VALUES:
   if [[ -z "$@" ]]; then
-    for FILE in $(grep -r -l -P '^specs\s*\(\)' bin/lib); do
+    DIR="bin/lib"
+  fi
+
+  if [[ ! -z "$@" ]]; then
+    if [[ -d "$1" ]]; then
+      DIR="$1"; shift
+    else
+      if [[ -f "$1" ]]; then
+        FILE="$1"; shift
+      else
+        SEARCH_STRING="$1"; shift
+      fi # === if file
+    fi # === if -d "$1"
+  fi # === if ! -z "$@"
+
+
+  # === IF is file: ==============================================================
+  if [[ ! -z "$FILE" ]]; then
+    $0 run-file "$FILE" "$@"
+    mksh_setup GREEN "==== All specs {{passed}} in file: BOLD{{$FILE}}"
+    return 0
+  fi # === if file
+
+
+  # === IF is dir: ===============================================================
+  if [[ ! -z "$DIR" ]]; then
+    local +x FILES="$(files-with-specs "$DIR")"
+    for FILE in $FILES; do
       mksh_setup BOLD "=== Specs: {{$FILE}}"
-      $0 run-specs "$FILE"
+      $0 run-file "$FILE"
       echo ""
     done
 
-    files="$(grep -r -L -P '^specs\s*\(\)' bin/lib | grep -P '.sh$' || :)"
-    if [[ -n "$files" ]]; then
-      mksh_setup ORANGE "=== Files {{without}} specs:"
-      echo -e "$files"
-      echo ""
+    if [[ -z "$FILES" ]]; then
+      mksh_setup RED "=== No files {{found}} in dir: BOLD{{$DIR}}"
+      exit 1
     fi
 
-    mksh_setup GREEN "==== All specs {{passed}}."
+    mksh_setup GREEN "=== All specs {{passed}} in dir: BOLD{{$DIR}}"
     return 0
-  fi
+  fi # === if dir
 
-  local FILE_ARG="$1"; shift
 
-  if [[ -f "$FILE_ARG" ]]; then
-    local +x FILE="$FILE_ARG"
-    local +x THIS_DIR="$PWD"
-    source "$FILE"
-    # NOTE: We can't use 'specs || report-fail'
-    #  because of this:
-    #  http://stackoverflow.com/questions/4072984/set-e-in-a-function
-    trap 'report-fail $?' EXIT
-    specs "$@"
-    trap - EXIT
-    exit 0
-  fi
+  # === IF is search string: =======================================================
+  if [[ ! -z "$SEARCH_STRING" ]]; then
+    local +x DIR="$(dirname "$SEARCH_STRING")"
+    local +x NAME="$(basename "$SEARCH_STRING")"
+    local +x FOUND=""
+    local +x FILES="$(files-with-specs "$DIR" "$NAME")"
+    for SPEC_FILE in $FILES; do
+      $0 run-file "$SPEC_FILE" "$@"
+      echo ""
+    done
 
-  FILES="$(find bin/lib -type f -name "$FILE_ARG" -print)"
-
-  if [[ -z "$FILES" ]]; then
-    mksh_setup RED "!!! Files {{not found}}: BOLD{{$FILE_ARG}}"
-    exit 1
-  fi
-
-  local +x IFS=$'\n'
-  for FILE in $FILES; do
-    if [[ ! -s "$FILE" ]]; then
-      mksh_setup RED "!!! File not found: {{$FILE_ARG}}"
-      exit 0
+    if [[ -z "$FILES" ]]; then
+      mksh_setup RED "!!! Files {{not found}}: BOLD{{$SEARCH_STRING}}"
+      exit 1
     fi
 
-    $0 run-specs "$FILE" "$@"
-  done
-}
+    mksh_setup GREEN "==== All specs {{passed}} in BOLD{{$SEARCH_STRING}}"
+  fi # === if SEARCH_STRING
+
+
+} # === end func run
 
 
 
