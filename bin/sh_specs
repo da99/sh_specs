@@ -20,15 +20,8 @@ case $action in
 
   *)
 
-    func_file="$THIS_DIR/bin/lib/${action}.sh"
-
-    if [[ ! -s "$func_file" ]]; then # === It's an error:
-      echo "!!! Unknown action: $action" 1>&2
-      exit 1
-    fi
-
-    source "$func_file"
-    "$action" "$@"
+    source "$THIS_DIR/../mksh_setup/source/name-to-func-or-exit.sh"
+    name-to-func-or-exit "$action"  "$@"
     ;;
 
 esac

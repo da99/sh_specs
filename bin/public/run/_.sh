@@ -1,13 +1,13 @@
 
-source "$THIS_DIR"/bin/lib/files-with-specs.sh
+source "$THIS_DIR"/bin/public/files-with-specs/_.sh
 
-# === {{CMD}}                       # Run all specs in bin/lib
+# === {{CMD}}                       # Run all specs in bin/public
 # === {{CMD}}  dir/sub1/sub2        # Run all specs in specified dir.
 # === {{CMD}}  path/to/filename.sh  dir/ file/glob/*   other-file  etc...
 run() {
 
   if [[ -z "$@" ]]; then
-    $0 run bin/lib
+    $0 run bin/public
     return 0
   fi
 
