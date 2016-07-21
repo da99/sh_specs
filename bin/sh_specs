@@ -1,17 +1,6 @@
 #!/usr/bin/env mksh
 #
 #
-THE_ARGS="$@"
-THIS_DIR="$(mksh_setup dirname_of_bin "$0")"
-
-if [[ -z "$@" ]]; then
-  action="watch"
-else
-  action=$1
-  shift
-fi
-
 set -u -e -o pipefail
-
-    source "$THIS_DIR/../mksh_setup/bin/source/name-to-func/_.sh"
-    name-to-func "$action"  "$@"
+source "$(dirname "$0")/../../mksh_setup/bin/source/name-to-func/_.sh"
+name-to-func "$@"
