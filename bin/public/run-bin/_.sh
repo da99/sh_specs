@@ -1,8 +1,8 @@
 
 
-source "$THIS_DIR/bin/private/desc.sh"
-source "$THIS_DIR/bin/private/ls-func-files.sh"
-source "$THIS_DIR/bin/private/ls-spec-files.sh"
+source "$THIS_FUNC_DIR/_.desc.sh"
+source "$THIS_FUNC_DIR/_.ls-func-files.sh"
+source "$THIS_FUNC_DIR/_.ls-spec-files.sh"
 
 # === {{CMD}}                  # Run all specs in bin/
 # === {{CMD}}  My_Perl_RegExp

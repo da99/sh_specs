@@ -1,7 +1,7 @@
 
-source "$THIS_DIR/bin/private/desc.sh"
-source "$THIS_DIR/bin/private/ls-func-files.sh"
-source "$THIS_DIR/bin/private/ls-spec-files.sh"
+source "$THIS_DIR/bin/public/run-dir/_.desc.sh"
+source "$THIS_DIR/bin/public/run-dir/_.ls-func-files.sh"
+source "$THIS_DIR/bin/public/run-dir/_.ls-spec-files.sh"
 # === {{CMD}}
 ls-without-specs () {
   for FILE in $(ls-func-files) ; do
