@@ -1,12 +1,14 @@
 
 source "$THIS_DIR/bin/private/desc.sh"
+source "$THIS_DIR/bin/private/ls-func-files.sh"
+source "$THIS_DIR/bin/private/ls-spec-files.sh"
 # === {{CMD}}
 ls-with-specs () {
 
-  for FILE in $(find -L "$PWD/bin/" -maxdepth 3 -mindepth 3 -type f -name "_.sh"); do
+  for FILE in $(ls-func-files); do
     local +x DIR="$(dirname "$FILE")"
-    local +x SPECS="$(find "$DIR"/ -mindepth 1 -maxdepth 1 -type f -not -name "_.*" )"
-    if [[ -z "$SPECS" ]] || ! grep "should-" "$SPECS" >/dev/null; then
+    local +x SPECS="$(ls-spec-files "$DIR")"
+    if [[ -z "$SPECS" ]]; then
       continue
     fi
 
