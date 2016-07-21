@@ -6,12 +6,13 @@ source "$THIS_DIR/bin/private/ls-spec-files.sh"
 
 # === {{CMD}}                  # Run all specs in bin/
 # === {{CMD}}  My_Perl_RegExp
-run() {
+# === Runs specs in: bin/public, bin/private, bin/dir, ...
+# === Ignores any files with names starting with: _.
+run-bin() {
 
   echo ""
   local +x ORIGINAL="$@"
   local +x FOUND=""
-  local +x SKIPS=""
   local +x IFS=$'\n'
 
   if [[ -z "$@" ]]; then
@@ -26,7 +27,7 @@ run() {
       mksh_setup BOLD -n "{{$(basename "$(dirname "$FILE")" )}} "
       mksh_setup BOLD -n "({{$(basename "$(dirname "$(dirname "$FILE")" )" )}})"
       mksh_setup BOLD    " /{{$(basename "$SPEC_FILE") }}"
-      $THIS_DIR/bin/private/run-file "$THIS_DIR" "$SPEC_FILE"
+      $THIS_DIR/bin/private/run-file "$SPEC_FILE"
       FOUND="yes"
       echo ""
     done
@@ -38,7 +39,7 @@ run() {
   fi
 
 
-} # === end func run
+} # === end func
 
 
 
