@@ -13,12 +13,17 @@ should-file-match () {
 
   local +x FILE="$1";    shift
   local +x TARGET_FILE="$1"; shift
-  local +x CMD="$1";     shift
 
-  set +e
-  eval "$CMD" >/dev/null
-  local +x STAT=$?
-  set -e
+  local CMD="[not specified]"
+
+  if [[ ! -z "$@" ]]; then
+    local CMD="$1"; shift
+
+    set +e
+    eval "$CMD" >/dev/null
+    local +x STAT=$?
+    set -e
+  fi
 
   if [[ $STAT -ne 0 ]]; then
     mksh_setup RED "=== Exited {{$STAT}}: BOLD{{$CMD}}"
@@ -27,6 +32,7 @@ should-file-match () {
 
   if [[ ! -s "$FILE" ]]; then
     mksh_setup RED "=== File {{not created}}: BOLD{{$FILE}} in command BOLD{{$CMD}}"
+    exit 1
   fi
 
 
