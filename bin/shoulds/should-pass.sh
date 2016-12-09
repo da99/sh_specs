@@ -10,7 +10,7 @@ should-pass () {
   set -e
 
   if [[ "$stat" -eq "0" ]]; then
-    bash_setup GREEN  "=== {{Passed}}: $@"
+    sh_color GREEN  "=== {{Passed}}: $@"
   else
     bash_setup RED "=== {{Failed}}: exit $stat: $@"
   fi

@@ -24,9 +24,9 @@ run-bin() {
   for FILE in $(ls-func-files | grep -P "$SEARCH"); do
     local +x DIR="$(dirname "$FILE")"
     for SPEC_FILE in $(ls-spec-files "$DIR"); do
-      mksh_setup BOLD -n "{{$(basename "$(dirname "$FILE")" )}} "
-      mksh_setup BOLD -n "({{$(basename "$(dirname "$(dirname "$FILE")" )" )}})"
-      mksh_setup BOLD    " /{{$(basename "$SPEC_FILE") }}"
+      sh_color BOLD -n "{{$(basename "$(dirname "$FILE")" )}} "
+      sh_color BOLD -n "({{$(basename "$(dirname "$(dirname "$FILE")" )" )}})"
+      sh_color BOLD    " /{{$(basename "$SPEC_FILE") }}"
       $THIS_DIR/bin/private/run-file "$SPEC_FILE"
       FOUND="yes"
       echo ""
@@ -34,7 +34,7 @@ run-bin() {
   done
 
   if [[ -z "$FOUND" ]]; then
-    mksh_setup RED "!!! {{No specs found}}."
+    sh_color RED "!!! {{No specs found}}."
     exit 1
   fi
 

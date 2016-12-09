@@ -12,9 +12,9 @@ should-match-regexp () {
   set -e
 
   if echo "$ACTUAL" | grep -P "$EXPECT"; then
-    mksh_setup GREEN "=== {{Passed}}: $CMD"
+    sh_color GREEN "=== {{Passed}}: $CMD"
   else
-    mksh_setup RED "=== EXPECTED: {{$ACTUAL}}  =~  BOLD{{$EXPECT}}"
+    sh_color RED "=== EXPECTED: {{$ACTUAL}}  =~  BOLD{{$EXPECT}}"
     exit 1
   fi
 } # === should-match-regexp ()

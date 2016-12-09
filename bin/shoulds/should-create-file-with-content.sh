@@ -10,22 +10,22 @@ should-create-file-with-content () {
   set -e
 
   if [[ $STAT -ne 0 ]]; then
-    mksh_setup RED "=== Exited {{$STAT}}: BOLD{{$CMD}}"
+    sh_color RED "=== Exited {{$STAT}}: BOLD{{$CMD}}"
     exit $STAT
   fi
 
   if [[ ! -e "$FILE" ]]; then
-    mksh_setup RED "=== File {{not created}}: BOLD{{$FILE}} in command BOLD{{$CMD}}"
+    sh_color RED "=== File {{not created}}: BOLD{{$FILE}} in command BOLD{{$CMD}}"
     exit 1
   fi
 
   local +x ACTUAL="$(cat "$FILE")"
   if [[ "$ACTUAL" != "$CONTENT" ]]; then
-    mksh_setup RED "=== File does {{not match}}: BOLD{{$FILE}} in command BOLD{{$CMD}}"
-    mksh_setup RED "{{$ACTUAL}} != BOLD{{$CONTENT}}"
+    sh_color RED "=== File does {{not match}}: BOLD{{$FILE}} in command BOLD{{$CMD}}"
+    sh_color RED "{{$ACTUAL}} != BOLD{{$CONTENT}}"
     exit 1
   fi
 
-  mksh_setup GREEN "=== {{PASSED}}: $CMD"
+  sh_color GREEN "=== {{PASSED}}: $CMD"
 } # === should-create-file-with-content ()
 

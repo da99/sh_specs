@@ -4,7 +4,7 @@
 run-file () {
   local +x SPEC_FILE="$1"; shift
   if [[ ! -f "$SPEC_FILE" ]]; then
-    mksh_setup RED "!!! {{Not a file}}: BOLD{{$SPEC_FILE}}"
+    sh_color RED "!!! {{Not a file}}: BOLD{{$SPEC_FILE}}"
     exit 1
   fi
 

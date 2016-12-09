@@ -34,6 +34,6 @@ should-match () {
     echo -e -n "${Color_Off}\"  != (expect) \""; echo -E    "$EXPECT\"";
     exit 1
   else
-    mksh_setup GREEN "-n" "=== {{Passed}}: "; echo -E "$DESC"
+    sh_color GREEN "-n" "=== {{Passed}}: "; echo -E "$DESC"
   fi
 } # === should-match

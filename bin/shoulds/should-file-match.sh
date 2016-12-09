@@ -26,22 +26,22 @@ should-file-match () {
   fi
 
   if [[ $STAT -ne 0 ]]; then
-    mksh_setup RED "=== Exited {{$STAT}}: BOLD{{$CMD}}"
+    sh_color RED "=== Exited {{$STAT}}: BOLD{{$CMD}}"
     exit $STAT
   fi
 
   if [[ ! -s "$FILE" ]]; then
-    mksh_setup RED "=== File {{not created}}: BOLD{{$FILE}} in command BOLD{{$CMD}}"
+    sh_color RED "=== File {{not created}}: BOLD{{$FILE}} in command BOLD{{$CMD}}"
     exit 1
   fi
 
 
   local +x ACTUAL="$(cat "$FILE")"
   if ! diff $DIFF_ARGS "$FILE" "$TARGET_FILE" ; then
-    mksh_setup RED "=== File does {{not match}}: BOLD{{$FILE}} != BOLD{{$TARGET_FILE}} in command BOLD{{$CMD}}"
+    sh_color RED "=== File does {{not match}}: BOLD{{$FILE}} != BOLD{{$TARGET_FILE}} in command BOLD{{$CMD}}"
     exit 1
   fi
 
-  mksh_setup GREEN "=== {{PASSED}}: $CMD"
+  sh_color GREEN "=== {{PASSED}}: $CMD"
 } # === should-create-file-with-content ()
 

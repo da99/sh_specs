@@ -10,5 +10,5 @@ new-spec () {
   echo "# === "                >> "$FILE_NAME"
   echo "set -u -e -o pipefail" >> "$FILE_NAME"
   chmod +x "$FILE_NAME"
-  mksh_setup BOLD "=== Created: {{$FILE_NAME}}"
+  sh_color BOLD "=== Created: {{$FILE_NAME}}"
 } # === end function

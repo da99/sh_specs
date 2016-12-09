@@ -18,7 +18,7 @@ ORIGIN_DIR="$PWD"
 SH_SPECS_DIR="$(dirname "$0")/../shoulds"
 
 if [[  ! -f  "$FILE" ]]; then
-  mksh_setup RED "=== Spec file {{not found}}: BOLD{{$FILE}}"
+  sh_color RED "=== Spec file {{not found}}: BOLD{{$FILE}}"
   exit 1
 fi
 

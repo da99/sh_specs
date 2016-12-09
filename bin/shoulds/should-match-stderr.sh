@@ -23,6 +23,6 @@ should-match-stderr () {
     echo       "    CMD: $CMD"
     exit 1
   else
-    mksh_setup GREEN "=== {{Passed}}: $(echo -E $CMD)"
+    sh_color GREEN "=== {{Passed}}: $(echo -E $CMD)"
   fi
 } # === should-match-stderr

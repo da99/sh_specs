@@ -16,15 +16,15 @@ run-dir () {
   echo ""
 
   for SPEC_FILE in $(find "$DIR" -maxdepth 1 -mindepth 1 -type f -name "*.sh" -and -not -name "_.*" | sort --human-numeric-sort); do
-    mksh_setup BOLD -n "$(dirname "$SPEC_FILE")"
-    mksh_setup BOLD    "/{{$(basename "$SPEC_FILE") }}"
+    sh_color BOLD -n "$(dirname "$SPEC_FILE")"
+    sh_color BOLD    "/{{$(basename "$SPEC_FILE") }}"
     $THIS_DIR/bin/private/run-file "$SPEC_FILE"
     FOUND="yes"
     echo ""
   done
 
   if [[ -z "$FOUND" ]]; then
-    mksh_setup RED "!!! {{No specs found}}."
+    sh_color RED "!!! {{No specs found}}."
     exit 1
   fi
 
