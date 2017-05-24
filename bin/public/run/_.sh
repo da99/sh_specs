@@ -4,14 +4,17 @@
 # ===   bin/public/*/specs
 # ===   sh/*/specs
 run () {
-  PATH="$PATH:$THIS_DIR/../sh_color/bin"
-
+  local +x PATH="$PATH:$THIS_DIR/../sh_color/bin"
   find-specs | while IFS=$'\n' read -r FILE ; do
     { ./"$FILE" &&  sh_color GREEN "=== {{PASSED}}: BOLD{{$FILE}}" ; } || {
       sh_color RED "!!! {{FAILED}}: $? BOLD{{$FILE}}"
     }
   done
 } # === end function
+
+sh_color () {
+  "$(dirname "$(realpath "$0")")"/../../sh_color/bin/sh_color "$@"
+}
 
 find-specs () {
   if [[ -e "bin/public" ]]; then
