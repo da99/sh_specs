@@ -2,7 +2,9 @@
 #
 #
 local +x THE_ARGS="$@"
-local +x THIS_DIR="$(dirname "$(dirname "$0")")"
+local +x THIS_DIR="$(dirname "$(dirname "$(realpath "$0")")")"
+
+PATH="$PATH:$THIS_DIR/../sh_color/bin"
 
 if [[ -z "$@" ]]; then
   local +x action="watch"
