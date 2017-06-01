@@ -5,7 +5,7 @@ should-exit () {
   local +x CMD="$@"
 
   local +x ACTUAL="0"
-  $@ || ACTUAL="$?"
+  $@ >/dev/null || ACTUAL="$?"
 
   if [[ "$ACTUAL" != "$EXPECTED" ]]; then
     sh_color RED "Exited: {{$ACTUAL}} but expected {{$EXPECTED}}"
