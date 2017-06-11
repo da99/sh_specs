@@ -1,8 +1,9 @@
 
 # === {{CMD}}
-# === Run specs in:
+# === Run these executable files:
 # ===   bin/public/*/specs
 # ===   sh/*/specs
+# ===   sh/specs
 run () {
   local +x PATH="$PATH:$THIS_DIR/../sh_color/bin"
   find-specs | while IFS=$'\n' read -r FILE ; do
@@ -23,6 +24,7 @@ find-specs () {
 
   if [[ -e "sh" ]]; then
     find sh/ -mindepth 2 -maxdepth 2 -type f -name "specs"
+    find sh/ -mindepth 1 -maxdepth 1 -type f -iname "specs"
   fi
 } # find-specs ()
 
